@@ -2,7 +2,7 @@
 
 SolarHub is a fully integrated web-based interface designed for the Deye / Sunsync 3-Phase Hybrid Solar Inverter (6kW, 8kW, 10kW, 12kW). The system continuously collects and stores critical data from the inverter at a high frequency. Through the responsive web interface, users can monitor real-time information, view historical data, and analyze important statistics.
 
-![Screenshot of the Interface on Desktop](https://clippy.cc/postimg/259208472281)
+![Screenshot of the Interface on Desktop](https://clippy.cc/postimg/296315715403)
 
 ### Features
 
