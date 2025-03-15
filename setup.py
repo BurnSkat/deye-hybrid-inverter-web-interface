@@ -1,6 +1,6 @@
 import os
 import subprocess
-import times
+import time
 import socket
 
 def installDependencies():
