@@ -44,20 +44,9 @@ export default class LineGraph {
    }
    setLabels(labels) {
       const containerWidth = this.labelContainer.getFirstElement().clientWidth;
-      let labelFontSize = containerWidth / labels.length / 2;
-      if (labelFontSize < 10) labelFontSize = 10;
-      if (labelFontSize > 18) labelFontSize = 18;
       this.labelContainer.setContent("");
       for (let label of labels) {
-         DOM.create("t.lineGraphLabel")
-            .append(
-               DOM.create("span")
-                  .setStyle({
-                     fontSize: labelFontSize + "px",
-                  })
-                  .setContent(label),
-            )
-            .appendTo(this.labelContainer);
+         DOM.create("t.lineGraphLabel").append(DOM.create("span").setContent(label)).appendTo(this.labelContainer);
       }
 
       this.tickLineContainer.setContent("");

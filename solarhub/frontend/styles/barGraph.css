@@ -53,7 +53,7 @@
 
 .barGraphContainer .label {
    font-family: boldest;
-   font-size: 12px;
+   font-size: 80%;
    opacity: 0.26;
    width: 100%;
    margin: 4px 0px;

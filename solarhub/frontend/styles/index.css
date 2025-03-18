@@ -41,7 +41,7 @@
 
 * {
    font-family: bold;
-   font-size: 18px;
+   font-size: 16px;
    -webkit-tap-highlight-color: transparent;
    cursor: default;
    overflow-wrap: break-word;
@@ -198,7 +198,7 @@ html::before {
 
 #loadingText {
    font-family: boldest;
-   font-size: 150%;
+   font-size: 160%;
    margin-top: 30px;
 }
 

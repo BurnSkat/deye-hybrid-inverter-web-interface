@@ -234,19 +234,19 @@ function buildFinancesContainer() {
    const costBoxWithoutPv = DOM.create("div.costBoxRed").append(DOM.create("t.costBoxValue#costWithoutPvValue"));
    DOM.create("div")
       .setStyle({ display: "flex", gap: "10px", marginTop: "20px" })
-      .append(DOM.create("div.financesElementContainer").append(DOM.create("t.financesText").setText("Real")).append(DOM.create("img.financesIcon [src=/assets/images/sun.png]")).append(costBoxWithPv))
+      .append(DOM.create("div.financesElementContainer").append(DOM.create("img.financesIcon [src=/assets/images/sun.png]")).append(DOM.create("t.financesText").setText("Real")).append(costBoxWithPv))
       .append(
          DOM.create("div.financesElementContainer")
-            .append(DOM.create("t.financesText").setText("Fiktiv"))
             .append(DOM.create("img.financesIcon [src=/assets/images/no_sun.png]"))
+            .append(DOM.create("t.financesText").setText("Fiktiv"))
             .append(costBoxWithoutPv),
       )
       .appendTo(financesInnerContainer);
    DOM.create("img [src=/assets/images/finances_sum_arrow.png]").setStyle({ height: "55px", margin: "20px 0px", objectFit: "contain", opacity: "0.2" }).appendTo(financesInnerContainer);
    const costBoxSaved = DOM.create("div.costBoxGreen").append(DOM.create("t.costBoxValue#costSavedValue"));
    DOM.create("div.financesElementContainer")
-      .append(DOM.create("t.financesText").setText("Gespart"))
       .append(DOM.create("img.financesIcon [src=/assets/images/cash.png]"))
+      .append(DOM.create("t.financesText").setText("Gespart"))
       .append(costBoxSaved)
       .appendTo(financesInnerContainer);
    amortizationBar.setColor({ r: 0, g: 176, b: 155 });
