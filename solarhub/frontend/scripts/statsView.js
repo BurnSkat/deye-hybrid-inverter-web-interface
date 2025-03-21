@@ -145,6 +145,7 @@ function buildDatetimePickers() {
 function buildInfoElements() {
    const container = DOM.create("div").setStyle({ display: "flex", alignItems: "center", justifyContent: "center", marginTop: "40px", flexWrap: "wrap", gap: "15px" });
    DOM.create("div")
+      .setStyle({ display: "flex", flexDirection: "column" })
       .appendTo(container)
       .append(
          buildSimpleIconTextElement("sun.png", "sunEnergy", "kWh Produziert"),
@@ -152,6 +153,7 @@ function buildInfoElements() {
          buildSimpleIconTextElement("min_sun.png", "minSunPower", "kW Minimum"),
       );
    DOM.create("div")
+      .setStyle({ display: "flex", flexDirection: "column" })
       .appendTo(container)
       .append(
          buildSimpleIconTextElement("house.png", "loadEnergy", "kWh Verbraucht"),
@@ -587,8 +589,8 @@ function processStatistics(data) {
    debugText.setContent("");
 
    // Ertrag / Verbrauch
-   DOM.select("sunEnergy").setText((data.sunEnergy / 1000).toTwoDecimalString(50));
-   DOM.select("loadEnergy").setText((data.loadEnergy / 1000).toTwoDecimalString(50));
+   DOM.select("sunEnergy").setText((data.sunEnergy / 1000).toTwoDecimalString(100));
+   DOM.select("loadEnergy").setText((data.loadEnergy / 1000).toTwoDecimalString(100));
 
    // Peak Values
    DOM.select("maxSunPower").setText("0,00");

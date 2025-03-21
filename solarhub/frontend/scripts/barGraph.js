@@ -25,14 +25,14 @@ export default class BarGraph {
          const bar1Height = Math.max(elem.a * scalingFactor, 2);
          const bar2Height = Math.max(elem.b * scalingFactor, 2);
          const offset = (containerHeight - labelHeight) / 2 - bar1Height;
-         DOM.create("div.bar.upper")
+         DOM.create("div.bar.upper.reflection_v")
             .setStyle({
                height: bar1Height + "px",
                marginTop: offset + "px",
             })
             .appendTo(elementContainer);
          DOM.create("t.label").setText(elem.label).appendTo(elementContainer);
-         DOM.create("div.bar.lower")
+         DOM.create("div.bar.lower.reflection_v")
             .setStyle({
                height: bar2Height + "px",
             })

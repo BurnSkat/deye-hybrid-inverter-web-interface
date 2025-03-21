@@ -10,12 +10,13 @@
    transition: 0.1s;
    margin: 5px;
    padding: 10px 20px;
-   border-radius: 16px;
+   border-radius: 14px;
    background-color: var(--foregroundColor);
+   cursor: pointer;
 }
 @media (pointer: fine) {
    .tab:hover {
-      cursor: pointer;
+      box-shadow: inset 0px 0px 0px 2px var(--textColor);
    }
    .tab:active {
       transform: scale(0.9);

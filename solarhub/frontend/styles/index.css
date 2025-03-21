@@ -109,12 +109,25 @@ html::before {
    width: calc(100% - 8px);
    border: 0px solid rgba(255, 255, 255, 0.4);
    border-top-width: 3px;
-   border-radius: 50px;
+   border-radius: 8px;
    position: absolute;
    top: 3px;
    left: 4px;
    filter: blur(1.5px);
-   z-index: 21;
+}
+
+.reflection_v::after {
+   content: "";
+   display: block;
+   height: calc(100% - 4px);
+   width: 6px;
+   border: 0px solid rgba(255, 255, 255, 0.4);
+   border-left-width: 3px;
+   border-radius: 6px;
+   position: absolute;
+   top: 2px;
+   left: 2px;
+   filter: blur(1px);
 }
 
 #mainContainer {
