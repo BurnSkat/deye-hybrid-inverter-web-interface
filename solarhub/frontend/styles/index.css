@@ -116,20 +116,6 @@ html::before {
    filter: blur(1.5px);
 }
 
-.reflection_v::after {
-   content: "";
-   display: block;
-   height: calc(100% - 4px);
-   width: 6px;
-   border: 0px solid rgba(255, 255, 255, 0.4);
-   border-left-width: 3px;
-   border-radius: 6px;
-   position: absolute;
-   top: 2px;
-   left: 2px;
-   filter: blur(1px);
-}
-
 #mainContainer {
    display: flex;
    align-items: center;
@@ -250,13 +236,16 @@ sub {
    padding: 12px 24px;
    border-radius: 16px;
    margin: 8px;
-   background-color: rgba(0, 0, 0, 0.08);
    transition: 0.1s;
+   cursor: pointer;
+   background-color: rgba(0, 0, 0, 0.08);
+   @media (prefers-color-scheme: dark) {
+      background-color: rgba(255, 255, 255, 0.08);
+   }
 }
 @media (hover: hover) {
    .button:hover {
-      background-color: rgba(0, 0, 0, 0.15);
-      cursor: pointer;
+      box-shadow: 0px 0px 0px 2px var(--textColor);
    }
 }
 
