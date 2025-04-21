@@ -10,7 +10,7 @@
    transition: 0.1s;
    margin: 3px;
    padding: 10px 20px;
-   border-radius: 14px;
+   border-radius: var(--borderRadius);
    background-color: var(--foregroundColor);
    cursor: pointer;
 }
@@ -24,7 +24,6 @@
    }
 }
 .selectedTab {
-   opacity: 1;
    color: var(--themeColor);
    background-color: var(--textColor);
 }
@@ -92,7 +91,9 @@
 .costBoxRed {
    background-color: rgba(255, 44, 133, 0.2);
    padding: 10px 15px;
-   border-radius: 12px;
+   border-radius: var(--borderRadius);
+   border: 0px solid var(--borderColor);
+   border-bottom-width: 4px;
 }
 
 .costBoxRed .costBoxValue {
@@ -103,7 +104,9 @@
 .costBoxGreen {
    background-color: rgba(0, 176, 155, 0.2);
    padding: 10px 15px;
-   border-radius: 12px;
+   border-radius: var(--borderRadius);
+   border: 0px solid var(--borderColor);
+   border-bottom-width: 4px;
 }
 
 .costBoxGreen .costBoxValue {
@@ -122,8 +125,8 @@
    margin: 5px 0px;
 }
 .financesIcon {
-   width: 35px;
-   height: 35px;
+   width: 22px;
+   height: 22px;
    object-fit: contain;
 }
 
@@ -146,6 +149,8 @@
    border-radius: 16px;
    box-sizing: border-box;
    position: relative;
+   /*border: 0px solid var(--borderColor);
+   border-bottom-width: 4px;*/
 }
 @media (prefers-color-scheme: dark) {
    .simpleIconTextElement {
@@ -174,7 +179,7 @@
 .simpleIconTextElement t:nth-of-type(1) {
    font-family: boldest;
    font-size: 130%;
-   margin-left: 12px;
+   margin-left: 15px;
    margin-right: 8px;
 }
 

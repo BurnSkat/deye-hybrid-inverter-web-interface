@@ -8,13 +8,24 @@
    background-color: var(--foregroundColor);
    max-width: 480px;
    z-index: 2;
+   overflow: hidden;
+
+   @media (prefers-color-scheme: dark) {
+      box-shadow: none;
+      /*background-color: transparent;
+      box-shadow: inset 0px 0px 0px 2px var(--borderColor);*/
+   }
 }
 
-@media (prefers-color-scheme: dark) {
-   #liveContainer {
-      box-shadow: none;
-      background-color: rgba(255, 255, 255, 0.02);
-   }
+#weatherImage {
+   position: absolute;
+   left: 0px;
+   top: 0px;
+   width: 100%;
+   height: 38%;
+   object-fit: cover;
+   mask-image: linear-gradient(to bottom, rgba(255, 255, 255, 1) 50%, rgba(255, 255, 255, 0) 100%);
+   z-index: -10;
 }
 
 #settingsButton {
@@ -28,16 +39,24 @@
    box-sizing: border-box;
    border-radius: 50%;
    transition: 0.2s;
-   margin-bottom: 10px;
+   margin-top: 20px;
    cursor: pointer;
 }
 #settingsButton img {
+   pointer-events: none;
    width: 100%;
    height: 100%;
-   display: block;
-   object-fit: contain;
-   filter: invert(var(--invertValue));
-   pointer-events: none;
+   background-color: rgb(255, 255, 255);
+
+   -webkit-mask-image: url("/assets/images/settings.png");
+   -webkit-mask-repeat: no-repeat;
+   -webkit-mask-size: contain;
+   -webkit-mask-position: center;
+
+   mask-image: url("/assets/images/settings.png");
+   mask-repeat: no-repeat;
+   mask-size: contain;
+   mask-position: center;
 }
 
 @media (pointer: fine) {
@@ -47,40 +66,46 @@
 }
 
 #dateTimeContainer {
-   margin-top: 0px;
    display: flex;
    flex-direction: column;
    align-items: center;
    justify-content: center;
+   position: relative;
+   margin: 56px 0px;
 }
 
 #time {
-   font-size: 280%;
+   font-size: 260%;
    font-family: boldest;
+   color: rgb(255, 255, 255);
+   text-shadow: 0 0 20px rgba(0, 0, 0, 0.4);
 }
 
 #date {
-   margin-top: -6px;
-   opacity: 0.26;
+   margin-top: 0px;
+   opacity: 0.36;
    font-family: bold;
+   color: rgb(255, 255, 255);
 }
 
-#liveBadgeBox {
-   padding: 7px 12px;
+/*#liveBadgeBox {
+   padding: 8px 12px;
+   margin: 30px 0px;
    border-radius: 11px;
    display: flex;
    align-items: center;
    justify-content: center;
-   border: 2px solid rgb(255, 34, 133, 0.15);
-   margin-top: 20px;
-   margin-bottom: 40px;
+   /*border: 2px solid rgba(255, 34, 133, 0.15);
+   background-color: rgba(255, 255, 255, 0.15);
+   border: 2px solid var(--borderColor);
 }
 
 #liveBadgeBox > div {
-   width: 10px;
-   height: 10px;
+   width: 9px;
+   height: 9px;
    border-radius: 50%;
    background-color: rgb(255, 34, 133);
+   background-color: rgb(0, 190, 140);
    margin-right: 7px;
    animation: blinking 1s infinite;
 }
@@ -96,8 +121,9 @@
 }
 
 #liveBadgeBox > t {
-   color: rgb(255, 34, 133);
+   /*color: rgb(255, 34, 133);
+   color: var(--textColor);
    font-family: boldest;
    font-size: 80%;
    letter-spacing: 1px;
-}
+}*/

@@ -32,7 +32,8 @@ export function build(mainContainer) {
    statsContainer.appendTo(mainContainer);
    statsContainer.append(buildTabs());
    statsContainer.append(buildDatetimePickers());
-   statsContainer.append(barGraph.container).append(lineGraph.container);
+   statsContainer.append(barGraph.container);
+   statsContainer.append(lineGraph.container);
    DOM.create("div")
       .setStyle({ maxWidth: "550px" })
       .append(
@@ -264,27 +265,52 @@ function buildFinancesContainer() {
 // Builds the Pie Chart UI
 function buildEnergyMixContainer() {
    energyMixPieChart.setIcon("house.png", { r: 96, g: 183, b: 255 }, false);
-   const container = DOM.create("div");
+   const container = DOM.create("div").setStyle({ width: "100%", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center" });
    container.append(buildBigTitle("energy_mix.png", "Strommix", "Aus diesen Quellen kommt der von uns verbrauchte Strom"));
    container.append(energyMixPieChart.container);
+   DOM.create("div")
+      .setStyle({ display: "flex", flexDirection: "column" })
+      .appendTo(container)
+      .append(
+         buildSimpleIconTextElement({ r: 255, g: 44, b: 133 }, "energyMixLegend1", "% aus dem Netz"),
+         buildSimpleIconTextElement({ r: 255, g: 199, b: 0 }, "energyMixLegend2", "% direkt von der Sonne"),
+         buildSimpleIconTextElement({ r: 0, g: 210, b: 140 }, "energyMixLegend3", "% aus der Batterie"),
+      );
    return container;
 }
 
 // Builds the Pie Chart UI
 function buildEnergyDistributionContainer() {
    energyDistributionPieChart.setIcon("sun.png", { r: 255, g: 199, b: 0 }, true);
-   const container = DOM.create("div");
+   const container = DOM.create("div").setStyle({ width: "100%", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center" });
    container.append(buildBigTitle("energy_mix.png", "Stromverteilung", "Dahin fließt der von der Solaranlage produzierte Strom"));
    container.append(energyDistributionPieChart.container);
+   DOM.create("div")
+      .setStyle({ display: "flex", flexDirection: "column" })
+      .appendTo(container)
+      .append(
+         buildSimpleIconTextElement({ r: 255, g: 44, b: 133 }, "energyDistributionLegend1", "% ins Netz eingespeist"),
+         buildSimpleIconTextElement({ r: 48, g: 150, b: 255 }, "energyDistributionLegend2", "% direkt verbraucht"),
+         buildSimpleIconTextElement({ r: 0, g: 210, b: 140 }, "energyDistributionLegend3", "% in die Batterie geladen"),
+      );
    return container;
 }
 
 // Builds the Pie Chart UI
 function buildSolarSourceContainer() {
    solarSourcePieChart.setIcon("energy.png", { r: 255, g: 199, b: 0 }, false);
-   const container = DOM.create("div");
+   const container = DOM.create("div").setStyle({ width: "100%", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center" });
    container.append(buildBigTitle("energy_mix.png", "Solaraufteilung", "Aus diesen Teilsystemen kommt unser Sonnenstrom"));
    container.append(solarSourcePieChart.container);
+   DOM.create("div")
+      .setStyle({ display: "flex", flexDirection: "column" })
+      .appendTo(container)
+      .append(
+         buildSimpleIconTextElement({ r: 255, g: 199, b: 0 }, "energySourceLegend1", "% von String 2+3"),
+         buildSimpleIconTextElement({ r: 204, g: 159, b: 0 }, "energySourceLegend2", "% von String 1"),
+         buildSimpleIconTextElement({ r: 173, g: 135, b: 0 }, "energySourceLegend3", "% von den Mikro-WRs"),
+      );
+
    return container;
 }
 
@@ -312,8 +338,12 @@ function buildCo2Container() {
 }
 
 function buildSimpleIconTextElement(icon, id, description) {
+   let imageElem = DOM.create(`img [src=/assets/images/${icon}]`);
+   if (typeof icon === "object") {
+      imageElem = DOM.create("div").setStyle({ width: "14px", height: "14px", borderRadius: "50%", backgroundColor: `rgb(${icon.r}, ${icon.g}, ${icon.b})` });
+   }
    return DOM.create(`div.simpleIconTextElement#${id}Container`)
-      .append(DOM.create(`img [src=/assets/images/${icon}]`))
+      .append(imageElem)
       .append(DOM.create(`t#${id}`).setContent("0"))
       .append(DOM.create("t").setContent(description));
 }
@@ -666,10 +696,16 @@ function processStatistics(data) {
          return acc + power * timeDiff;
       }, 0) / 3_600_000;
    energyMixPieChart.setData([
-      { value: gridImportEnergy, color: { r: 255, g: 44, b: 133 }, description: "Netzbezug" },
-      { value: directSunUseEnergy, color: { r: 255, g: 199, b: 0 }, description: "Sonne Direkt" },
-      { value: batteryUseEnergy, color: { r: 0, g: 210, b: 140 }, description: "Batterie" },
+      { value: gridImportEnergy, color: { r: 255, g: 44, b: 133 } },
+      { value: directSunUseEnergy, color: { r: 255, g: 199, b: 0 } },
+      { value: batteryUseEnergy, color: { r: 0, g: 210, b: 140 } },
    ]);
+   {
+      const total = gridImportEnergy + directSunUseEnergy + batteryUseEnergy;
+      DOM.select("energyMixLegend1").setText(Math.round((100 * gridImportEnergy) / total));
+      DOM.select("energyMixLegend2").setText(Math.round((100 * directSunUseEnergy) / total));
+      DOM.select("energyMixLegend3").setText(Math.round((100 * batteryUseEnergy) / total));
+   }
 
    // Energy Disribution
    const batteryChargeEnergy =
@@ -679,10 +715,16 @@ function processStatistics(data) {
          return acc + power * timeDiff;
       }, 0) / 3_600_000;
    energyDistributionPieChart.setData([
-      { value: gridExportEnergy, color: { r: 255, g: 44, b: 133 }, description: "Netzeinspeisung" },
-      { value: directSunUseEnergy, color: { r: 48, g: 150, b: 255 }, description: "Direktverbrauch" },
-      { value: batteryChargeEnergy, color: { r: 0, g: 210, b: 140 }, description: "Batterieladung" },
+      { value: gridExportEnergy, color: { r: 255, g: 44, b: 133 } },
+      { value: directSunUseEnergy, color: { r: 48, g: 150, b: 255 } },
+      { value: batteryChargeEnergy, color: { r: 0, g: 210, b: 140 } },
    ]);
+   {
+      const total = gridExportEnergy + directSunUseEnergy + batteryChargeEnergy;
+      DOM.select("energyDistributionLegend1").setText(Math.round((100 * gridExportEnergy) / total));
+      DOM.select("energyDistributionLegend2").setText(Math.round((100 * directSunUseEnergy) / total));
+      DOM.select("energyDistributionLegend3").setText(Math.round((100 * batteryChargeEnergy) / total));
+   }
 
    // Solar Sources
    const string1Energy =
@@ -704,10 +746,16 @@ function processStatistics(data) {
          return acc + power * timeDiff;
       }, 0) / 3_600_000;
    solarSourcePieChart.setData([
-      { value: string1Energy, color: { r: 255, g: 199, b: 0 }, description: "Dach String 2+3" },
-      { value: string2Energy, color: { r: 204, g: 159, b: 0 }, description: "Dach String 1" },
-      { value: genPortEnergy, color: { r: 173, g: 135, b: 0 }, description: "Mikrowechselrichter" },
+      { value: string1Energy, color: { r: 255, g: 199, b: 0 } },
+      { value: string2Energy, color: { r: 204, g: 159, b: 0 } },
+      { value: genPortEnergy, color: { r: 173, g: 135, b: 0 } },
    ]);
+   {
+      const total = string1Energy + string2Energy + genPortEnergy;
+      DOM.select("energySourceLegend1").setText(Math.round((100 * string1Energy) / total));
+      DOM.select("energySourceLegend2").setText(Math.round((100 * string2Energy) / total));
+      DOM.select("energySourceLegend3").setText(Math.round((100 * genPortEnergy) / total));
+   }
 
    // Autarkiegrad & Eigenverbrauch
    const selfSufficiencyValue = Math.round((100 * (directSunUseEnergy + batteryUseEnergy)) / (gridImportEnergy + directSunUseEnergy + batteryUseEnergy));

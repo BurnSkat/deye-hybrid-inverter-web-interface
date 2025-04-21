@@ -8,15 +8,14 @@ import json
 import glob
 import wifiManager
 import helper
+from datetime import datetime
 
 def start():
    global cursor, conn, config, batteryLimits
    cursor, conn = dbManager.connect("database.db")
    connectToSerialUsbAdapter()
 
-   from datetime import datetime
-
-   # Removing Section of wrong data.
+   # Removing Section of faulty data.
    # print("Deleting Section...")
    # start_time = int(datetime(2024, 9, 19, 11, 00).timestamp() * 1000)  # 21.09.2024 12:00 Uhr
    # end_time = int(datetime(2024, 9, 19, 18, 30).timestamp() * 1000)  # 21.09.2024 18:00 Uhr
@@ -60,9 +59,7 @@ def start():
       # Save Live Data
       dbManager.emptyTable("live")
       dbManager.addRowToTable("live", liveValueBuffer)
-      for key, value in liveValueBuffer.items():
-         print(f"{key}: {value}")
-      print("----------------")
+      print(" | ".join(f"{k}: {v}" for k, v in liveValueBuffer.items()))
 
       # Calculate averages & save historical data every minute
       currentTime = time.time()
@@ -77,9 +74,9 @@ def start():
       if counter >= 600: # roughly every 10 Minutes
          counter = 0
          ip = wifiManager.getPublicIpAddress()
-         if publicIpAddress != ip:
+         if ip and publicIpAddress != ip:
             publicIpAddress = ip
-            sendTelegramMessage("Neue Interface-URL: " + publicIpAddress + ":1213", silent=True, pin=True)
+            sendTelegramMessage(f"Neue Interface-URL: {publicIpAddress}:1213", silent=True, pin=True)
 
       # Save all changes and wait
       conn.commit()
@@ -128,12 +125,11 @@ def manageBattery(buffer):
    dischargeRegister = config["battery"]["discharge"]["register"]
    minSoC = 100*config["battery"]["discharge"]["limit"]
    dischargeCurrent = config["battery"]["discharge"]["maxCurrent"]
-   recoverSoC = 100*config["battery"]["discharge"]["recover"]
 
    # Limit Battery SoC
    if battSoC <= minSoC:
       writeRegister(dischargeRegister, 0)
-   elif battSoC > recoverSoC:
+   else:
       writeRegister(dischargeRegister, dischargeCurrent)
    if battSoC >= maxSoC:
       writeRegister(chargeRegister, 0)

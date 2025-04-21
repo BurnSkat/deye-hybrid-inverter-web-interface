@@ -1,5 +1,5 @@
 import DOM from "./dom.js";
-import { getLiveData, getPeakValues, getWifiNetworks, predictBatteryRemainingTime, updateWifi } from "./com.js";
+import { getConfig, getLiveData, getPeakValues, getWifiNetworks, predictBatteryRemainingTime, updateWifi } from "./com.js";
 import { constants } from "./helper.js";
 import StateBar from "./stateBar.js";
 
@@ -11,15 +11,17 @@ const sunPowerBar = new StateBar();
 const loadPowerBar = new StateBar();
 const batterySocBar = new StateBar();
 const gridPowerBar = new StateBar();
+let weatherCode = 0;
 
 export async function build(mainContainer) {
    liveContainer.appendTo(mainContainer);
 
-   DOM.create("div").setStyle({ flexGrow: 2 }).appendTo(liveContainer);
-   buildSettingsButton();
+   DOM.create("img#weatherImage [src=/assets/images/weather/day_rainy.jpg]").appendTo(liveContainer);
 
+   DOM.create("div").setStyle({ flexGrow: 1 }).appendTo(liveContainer);
+   //buildSettingsButton();
    DOM.create("div#dateTimeContainer").append(timeTextView).append(dateTextView).appendTo(liveContainer);
-   DOM.create("div#liveBadgeBox").append(DOM.create("div")).append(DOM.create("t").setText("LIVE")).appendTo(liveContainer);
+   //DOM.create("div#liveBadgeBox").append(DOM.create("div")).append(DOM.create("t").setText("LIVE")).appendTo(liveContainer);
 
    DOM.create("div").setStyle({ flexGrow: 1 }).appendTo(liveContainer);
 
@@ -96,10 +98,17 @@ function updateLiveData() {
          gridPowerBar.setInfoText(`-${constants.costPerKwh.toEuroString()} / kWh`);
       }
    });
+
+   const weatherImagePath = getWeatherImage(weatherCode);
+   const img = DOM.select("weatherImage");
+   img.attr({ src: weatherImagePath });
 }
 
-// Update all Values that don't need to be updated every second.
+// Update all the stuff that don't need to be updated every second.
 function updateMaxValues() {
+   getCurrentWeatherCode().then((code) => {
+      weatherCode = code;
+   });
    const end = Date.now();
    const start = end - 7 * 24 * 60 * 60 * 1000;
    let maxSunPower, maxLoadPower;
@@ -124,10 +133,40 @@ function updateMaxValues() {
 // Builds the Settings button
 function buildSettingsButton() {
    DOM.create("div#settingsButton")
-      .append(DOM.create("img [src=/assets/images/settings.png]"))
+      .append(DOM.create("img"))
       .appendTo(liveContainer)
       .onClick(() => {
          window.location.href = "/settings";
          return;
       });
+}
+
+async function getCurrentWeatherCode() {
+   const location = constants.location;
+   const res = await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${location.lat}&longitude=${location.lon}&current=weather_code`);
+   const obj = await res.json();
+   const weatherCode = obj.current.weather_code;
+   return weatherCode;
+}
+
+function getWeatherImage(weatherCode) {
+   const basePath = "/assets/images/weather/";
+
+   if (sunPowerBar.val <= 20) {
+      return basePath + "night.jpg";
+   }
+
+   switch (weatherCode) {
+      case 0:
+         return basePath + "day_clear.jpg";
+      case 1:
+      case 2:
+         return basePath + "day_mainly_clear.jpg";
+      case 3:
+         return basePath + "day_overcast.jpg";
+      case 4:
+         return basePath + "day_mainly_clear.jpg";
+      default:
+         return basePath + "unknown.jpg";
+   }
 }

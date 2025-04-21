@@ -9,12 +9,10 @@ import json
 import urllib.request
 import helper
 
-
 STARTUP_DELAY = 2*60
 CHECK_INTERVAL = 30
 AP_TIME = 15*60
 WIFI_TIME = 2*60
-PING_ATTEMPTS = 5
 
 def start():
    time.sleep(STARTUP_DELAY)
@@ -27,23 +25,17 @@ def start():
          time.sleep(WIFI_TIME)
       time.sleep(CHECK_INTERVAL)
 
-def isConnectedToWifi(host="8.8.8.8"):
-   for attempt in range(PING_ATTEMPTS):
-      try:
-         response = subprocess.run(
-            ["ping", "-c", "1", "-W", "2", host],
-            stdout=subprocess.PIPE,
-            stderr=subprocess.PIPE
-         )
-         if response.returncode == 0:
-            return True
-      except Exception as e:
-         print(f"Fehler bei der Ausführung der Ping-Anfrage (Versuch {attempt + 1}): {e}")
-   return False
+def isConnectedToWifi():
+   result = subprocess.run(["iwgetid", "wlan0", "-r"], capture_output=True, text=True)
+   return bool(result.stdout.strip())
 
 def getPublicIpAddress():
-   with urllib.request.urlopen("https://api64.ipify.org?format=text") as response:
-      return response.read().decode().strip()
+   try:
+      with urllib.request.urlopen("https://api64.ipify.org?format=text", timeout=5) as response:
+         return response.read().decode().strip()
+   except Exception as e:
+      print(f"[WARN] Fehler beim Abrufen der öffentlichen IP: {e}")
+      return None
 
 def startAP():
    config = helper.getConfig()

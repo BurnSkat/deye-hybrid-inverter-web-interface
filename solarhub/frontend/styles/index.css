@@ -29,13 +29,15 @@
    --foregroundColor: rgb(255, 255, 255);
    --backgroundGradient: linear-gradient(135deg, rgb(255, 249, 233), rgb(220, 233, 255));
    --invertValue: 0;
+   --borderColor: rgba(20, 40, 60, 0.15);
 
    @media (prefers-color-scheme: dark) {
       --textColor: rgba(225, 230, 235, 1);
       --themeColor: rgba(0, 0, 0, 1);
-      --foregroundColor: rgba(255, 255, 255, 0.05);
+      --foregroundColor: rgba(230, 240, 255, 0.07);
       --backgroundGradient: linear-gradient(135deg, rgba(20, 30, 40), rgba(0, 10, 20));
       --invertValue: 1;
+      --borderColor: rgba(220, 230, 240, 0.15);
    }
 }
 
@@ -256,6 +258,7 @@ input[type="checkbox"] {
    height: 20px;
    border: 2px solid rgba(128, 128, 128, 0.2);
    border-radius: 7px;
+   border-radius: 50%;
    display: inline-block;
    position: relative;
    cursor: pointer;

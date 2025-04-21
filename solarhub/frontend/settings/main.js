@@ -10,6 +10,12 @@ DOM.create("div.button")
    .onClick(() => {
       changeWifi();
    });
+DOM.create("div.inputButtonContainer").append(DOM.create("div.input [contenteditable=true]").setContent("0")).append(DOM.create("div.button").setText("Read Register")).appendTo(mainContainer);
+DOM.create("div.inputButtonContainer")
+   .append(DOM.create("div.input [contenteditable=true]").setContent("0"))
+   .append(DOM.create("div.input [contenteditable=true]").setContent("0"))
+   .append(DOM.create("div.button").setText("Write Register"))
+   .appendTo(mainContainer);
 
 // Change Wifi
 async function changeWifi() {

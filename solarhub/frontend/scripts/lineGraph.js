@@ -82,16 +82,17 @@ export default class LineGraph {
             const x = i * stepSize;
             const y = height - currentValue * scalingFactor + yOffset;
 
+            const gradient = ctx.createLinearGradient(0, 0, 0, canvas.height);
+            gradient.addColorStop(0, `rgba(${color.r}, ${color.g}, ${color.b}, ${color.a == 1 ? 0.4 : 0})`);
+            gradient.addColorStop(0.6, `rgba(${color.r}, ${color.g}, ${color.b}, 0)`);
+            ctx.fillStyle = gradient;
+            ctx.strokeStyle = `rgba(${color.r}, ${color.g}, ${color.b}, ${color.a})`;
+
             if (isNaN(prevValue)) {
                ctx.beginPath();
-               const gradient = ctx.createLinearGradient(0, 0, 0, canvas.height);
-               gradient.addColorStop(0, `rgba(${color.r}, ${color.g}, ${color.b}, ${color.a == 1 ? 0.4 : 0})`);
-               gradient.addColorStop(0.6, `rgba(${color.r}, ${color.g}, ${color.b}, 0)`);
-               ctx.fillStyle = gradient;
-               ctx.strokeStyle = `rgba(${color.r}, ${color.g}, ${color.b}, ${color.a})`;
                pathStartX = x;
                ctx.moveTo(x, y);
-               continue;
+               //continue;
             }
             if (isNaN(nextValue)) {
                ctx.lineTo(x, y);
@@ -99,45 +100,36 @@ export default class LineGraph {
                ctx.lineTo(x, height);
                ctx.lineTo(pathStartX, height);
                ctx.fill();
-
-               if (i != values.length - 1) {
-                  ctx.beginPath();
-                  ctx.arc(x, y, 4, 0, 2 * Math.PI);
-                  ctx.fillStyle = `rgba(${color.r}, ${color.g}, ${color.b}, ${color.a})`;
-                  ctx.fill();
-               }
-               continue;
+               //continue;
             }
             const nextX = (i + 1) * stepSize;
             const nextY = height - nextValue * scalingFactor + yOffset;
             const cpx = (x + nextX) / 2;
             const cpy = (y + nextY) / 2;
             ctx.quadraticCurveTo(x, y, cpx, cpy);
+
+            if ((isNaN(prevValue) || isNaN(nextValue)) && i != 0 && i != values.length - 1) {
+               const arcPath = new Path2D();
+               arcPath.arc(x, y, 5, 0, 2 * Math.PI);
+               ctx.fillStyle = `rgba(${color.r}, ${color.g}, ${color.b}, ${color.a})`;
+               ctx.fill(arcPath);
+
+               ctx.globalCompositeOperation = "destination-out";
+               const holePath = new Path2D();
+               holePath.arc(x, y, 2, 0, 2 * Math.PI);
+               ctx.fill(holePath);
+               ctx.globalCompositeOperation = "source-over";
+            }
          }
 
          // Draw Hover
-         // if (this.mouseX !== undefined) {
-         //    ctx.beginPath();
-         //    ctx.lineWidth = "3";
-         //    const textColor = getComputedStyle(document.documentElement).getPropertyValue("--textColor");
-         //    ctx.strokeStyle = textColor.trim();
-         //    ctx.moveTo(this.mouseX, 0);
-         //    ctx.lineTo(this.mouseX, height);
-         //    ctx.stroke();
-
-         //    const index = Math.round(this.mouseX / step);
-         //    const elem = values[index];
-         //    // const val = Math.max(Math.round(elem[key] || 0), 0);
-         //    // if (key == "a") this.sunEnergyValueText.setText(val);
-         //    // if (key == "b") this.houseEnergyValueText.setText(val);
-         //    // this.sunEnergyUnitText.setText("Watt");
-         //    // this.houseEnergyUnitText.setText("Watt");
-         // } else {
-         //    // this.sunEnergyValueText.setText((this.sunEnergy / 1000).toThreeDecimalString());
-         //    // this.sunEnergyUnitText.setText("kWh");
-         //    // this.houseEnergyValueText.setText((this.houseEnergy / 1000).toThreeDecimalString());
-         //    // this.houseEnergyUnitText.setText("kWh");
-         // }
+         /*if (this.mouseX !== undefined) {
+            console.log(x);
+            ctx.beginPath();
+            ctx.arc(x, y, 4, 0, 2 * Math.PI);
+            ctx.fillStyle = `rgba(${color.r}, ${color.g}, ${color.b}, ${color.a})`;
+            ctx.fill();
+            }*/
       };
 
       const enabledData = Object.values(this.data).filter((v) => v.enabled);

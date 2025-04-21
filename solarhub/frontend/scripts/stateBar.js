@@ -64,6 +64,7 @@ export default class StateBar {
       return this.maxValue;
    }
    setValue(val) {
+      this.val = val;
       let ratio = Math.min((val / this.maxValue) * 100, 100);
       if (ratio < 0) ratio = 0;
       this.barInner.setStyle({

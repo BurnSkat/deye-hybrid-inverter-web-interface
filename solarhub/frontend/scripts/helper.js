@@ -81,25 +81,6 @@ export function setDateTimeFromUnix(unixTimestamp, withTime) {
    }
 }
 
-// Sets the Status Bar and Tab Bar Color of Safari
-export function setSafariUIColor(color) {
-   let themeMetaTag = document.querySelector('meta[name="theme-color"]');
-   let statusBarMetaTag = document.querySelector('meta[name="apple-mobile-web-app-status-bar-style"]');
-   if (!themeMetaTag) {
-      themeMetaTag = document.createElement("meta");
-      themeMetaTag.name = "theme-color";
-      document.head.appendChild(themeMetaTag);
-   }
-   if (!statusBarMetaTag) {
-      statusBarMetaTag = document.createElement("meta");
-      statusBarMetaTag.name = "apple-mobile-web-app-status-bar-style";
-      document.head.appendChild(statusBarMetaTag);
-   }
-   themeMetaTag.content = color;
-   statusBarMetaTag.content = color;
-   document.body.style.backgroundColor = color;
-}
-
 // Checks if Darkmode is enabled
 export function isDarkMode() {
    return window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches;

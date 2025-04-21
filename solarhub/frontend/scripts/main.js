@@ -1,7 +1,7 @@
 import DOM from "./dom.js";
 import * as LiveView from "./liveView.js";
 import * as StatsView from "./statsView.js";
-import { setSafariUIColor, mod, constants } from "./helper.js";
+import { mod, constants } from "./helper.js";
 
 // Variables
 const mainContainer = DOM.select("mainContainer");
@@ -63,7 +63,6 @@ function setDisplayMode(mode) {
       document.documentElement.style.setProperty("--backgroundGradient", "");
       document.body.style.background = "";
       const themeColor = getComputedStyle(document.documentElement).getPropertyValue("--themeColor").trim();
-      setSafariUIColor(themeColor);
    }
 
    if (mode == 1) {
@@ -87,6 +86,5 @@ function setDisplayMode(mode) {
       });
       document.documentElement.style.setProperty("--backgroundGradient", "transparent");
       document.body.style.background = "black";
-      setSafariUIColor("#000000");
    }
 }

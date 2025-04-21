@@ -1,7 +1,7 @@
 {
    "battery": {
       "capacity": 14336,
-      "discharge": { "limit": 0.05, "recover": 0, "register": 109, "maxCurrent": 180 },
+      "discharge": { "limit": 0.05, "register": 109, "maxCurrent": 180 },
       "charge": { "limit": 0.95, "register": 108, "maxCurrent": 180 }
    },
    "telegram": {
@@ -35,5 +35,9 @@
    },
    "costPerKwh": 0.35,
    "earningsPerKwh": 0.0803,
-   "totalSystemCost": 9700
+   "totalSystemCost": 11500,
+   "location": {
+      "lat": 47.858,
+      "lon": 12.137
+   }
 }

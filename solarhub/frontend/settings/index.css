@@ -1,3 +1,19 @@
 #mainContainer {
    flex-direction: column;
 }
+
+.inputButtonContainer {
+   display: flex;
+   align-items: center;
+   justify-content: center;
+}
+
+.input {
+   min-width: 40px;
+   padding: 10px 20px;
+   background-color: white;
+   border-radius: 14px;
+   text-decoration: none;
+   outline: none;
+   margin: 0px 4px;
+}
