@@ -65,7 +65,7 @@ export default class LineGraph {
       ctx.scale(pixelFactor, pixelFactor);
       ctx.lineJoin = "round";
       ctx.lineCap = "round";
-      ctx.lineWidth = 3;
+      ctx.lineWidth = 1;
       ctx.clearRect(0, 0, width, height);
 
       const drawCurve = (values, color, scalingFactor) => {
