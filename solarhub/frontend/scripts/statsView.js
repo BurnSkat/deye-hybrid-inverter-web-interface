@@ -169,8 +169,8 @@ function buildGraphCheckBoxes() {
    const checkBoxes = [
       { name: "Produktion", keys: ["sun"], initiallyChecked: true },
       { name: "Verbrauch", keys: ["load"], initiallyChecked: true },
-      { name: "Batterie", keys: ["battSoC", "battLimitUpper", "battLimitLower"], initiallyChecked: false },
-      { name: "Netz", keys: ["gridImport", "gridExport"], initiallyChecked: false },
+      { name: "Batterie", keys: ["battSoC", "battLimitUpper", "battLimitLower"], initiallyChecked: true },
+      { name: "Netz", keys: ["gridImport", "gridExport"], initiallyChecked: true },
    ];
    for (let checkBox of checkBoxes) {
       const checkBoxContainer = DOM.create("div").setStyle({ display: "flex", alignItems: "center", padding: "14px" }).appendTo(container);
