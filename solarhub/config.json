@@ -1,8 +1,8 @@
 {
    "battery": {
-      "capacity": 14336,
-      "discharge": { "limit": 0.05, "register": 109, "maxCurrent": 180 },
-      "charge": { "limit": 0.95, "register": 108, "maxCurrent": 180 }
+      "capacity": 4600,
+      "discharge": { "limit": 0.05, "register": 109, "maxCurrent": 100 },
+      "charge": { "limit": 1.00, "register": 108, "maxCurrent": 15 }
    },
    "telegram": {
       "enabled": false,
@@ -11,7 +11,7 @@
    },
    "inverter": {
       "name": "Deye Hybrid 48V",
-      "slave_id": 0,
+      "slave_id": 1,
       "sources": [
          "https://diysolarforum.com/threads/modbus-comms-with-deye-inverter.46197/",
          "https://github.com/StephanJoubert/home_assistant_solarman/blob/main/custom_components/solarman/inverter_definitions/deye_sg04lp3.yaml"
@@ -34,10 +34,10 @@
       "prefix": "192.168.4"
    },
    "costPerKwh": 0.35,
-   "earningsPerKwh": 0.0803,
-   "totalSystemCost": 11500,
+   "earningsPerKwh": 0.07,
+   "totalSystemCost": 5000,
    "location": {
-      "lat": 47.858,
-      "lon": 12.137
+      "lat": 51.695,
+      "lon": 7.786
    }
 }
