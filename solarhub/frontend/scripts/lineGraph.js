@@ -151,33 +151,57 @@ export default class LineGraph {
    }
 
    hoverOverview(x, y) {
-      const width = this.canvas.getFirstElement().clientWidth;
-      if (x && y) {
-         this.hoverBox.setContent("");
-         const enabledHoverData = Object.values(this.data)
+    const width = this.canvas.getFirstElement().clientWidth;
+    if (x && y) {
+        this.hoverBox.setContent("");
+        const enabledHoverData = Object.values(this.data)
             .filter((a) => a.enabled)
             .filter((a) => a.showInHover);
-         enabledHoverData.forEach((a) => {
+
+        // --- Add timestamp above values ---
+        // Assuming you have an array of time labels, e.g., this.labels = ["10:00", "10:05", ...]
+        // Or you can pass it in via setLabels
+        if (this.labels && this.labels.length > 0) {
+            const stepSize = width / (this.labels.length - 1);
+            const index = Math.round(x / stepSize);
+            // Format label as hh:mm if not already
+            let label = this.labels[index] || "";
+            if (label) {
+                // If label is a Date object, format it to hh:mm
+                if (label instanceof Date) {
+                    label = label.getHours().toString().padStart(2, "0") + ":" +
+                            label.getMinutes().toString().padStart(2, "0");
+                }
+                // Add the timestamp element at the top
+                this.hoverBox.append(
+                    DOM.create("t")
+                        .setText(label)
+                        .setStyle({ fontWeight: "bold", fontSize: "16px", display: "block", marginBottom: "4px" })
+                );
+            }
+        }
+
+        enabledHoverData.forEach((a) => {
             const stepSize = width / (a.values.length - 1);
             const index = Math.round(x / stepSize);
             this.hoverBox.append(
-               DOM.create("t")
-                  .setText(a.name + ": " + Math.round(a.values[index] || 0) + " " + a.unit)
-                  .setStyle({ color: `rgb(${a.color.r}, ${a.color.g}, ${a.color.b})`, display: "block" }),
+                DOM.create("t")
+                    .setText(a.name + ": " + Math.round(a.values[index] || 0) + " " + a.unit)
+                    .setStyle({ color: `rgb(${a.color.r}, ${a.color.g}, ${a.color.b})`, display: "block" }),
             );
-         });
+        });
 
-         const hoverBoxWidth = this.hoverBox.getWidth();
-         const adjustedX = x - hoverBoxWidth * (x / width);
-         const hoverBoxHeight = this.hoverBox.getHeight();
-         const adjustedY = -hoverBoxHeight + 60;
-         this.hoverBox.setStyle({ opacity: "1", left: adjustedX + "px", top: adjustedY + "px" });
-         this.hoverLine.setStyle({ opacity: "1", left: x + "px" });
-      } else {
-         setTimeout(() => {
+        const hoverBoxWidth = this.hoverBox.getWidth();
+        const adjustedX = x - hoverBoxWidth * (x / width);
+        const hoverBoxHeight = this.hoverBox.getHeight();
+        const adjustedY = -hoverBoxHeight + 60;
+        this.hoverBox.setStyle({ opacity: "1", left: adjustedX + "px", top: adjustedY + "px" });
+        this.hoverLine.setStyle({ opacity: "1", left: x + "px" });
+    } else {
+        setTimeout(() => {
             this.hoverBox.setStyle({ opacity: "0" });
             this.hoverLine.setStyle({ opacity: "0" });
-         }, 10);
-      }
-   }
+        }, 10);
+    }
+}
 }
