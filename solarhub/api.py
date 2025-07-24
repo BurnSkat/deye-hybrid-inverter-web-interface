@@ -18,12 +18,12 @@ def request(path, params):
          return liveData[0]["p_load"]
       if action == "batt_soc":
          return liveData[0]["batt_soc"]
-      if action == "t_dctemp":
-         return liveData[0]["t_dctemp"]
+      if action == "t_batt":
+         return liveData[0]["t_batt"]
       if action == "t_actemp":
          return liveData[0]["t_actemp"]
       if action == "batt_socalt":
-         return liveData[0]["bat_socalt"]
+         return liveData[0]["batt_socalt"]
       if action == "p_totalin":
          return liveData[0]["p_totalin"]
       if action == "summary":
@@ -53,9 +53,9 @@ def request(path, params):
               AVG(p_grid_export) AS p_grid_export,
               AVG(p_inverter) AS p_inverter,
               AVG(p_batt) AS p_batt,
-              AVG(t_dctemp) AS t_dctemp,
+              AVG(t_batt) AS t_batt,
               AVG(t_actemp) AS t_actemp,
-              AVG(bat_socalt) AS bat_socalt,
+              AVG(batt_socalt) AS batt_socalt,
               AVG(p_totalin) AS p_totalin
            FROM
               logs
