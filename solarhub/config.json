@@ -26,7 +26,7 @@
          "p_load": { "address": 653, "isTwosComplement": true },
          "p_inverter": { "address": 636, "isTwosComplement": true },
          "p_gen": { "address": 667, "isTwosComplement": true },
-         "t_dctemp": { "address": 540, "isTwosComplement": true },
+         "t_batt": { "address": 586, "isTwosComplement": true },
          "t_actemp": { "address": 541, "isTwosComplement": true },
          "batt_socalt": { "address": 588, "isTwosComplement": false },
          "p_totalin": { "address": 607, "isTwosComplement": true }
